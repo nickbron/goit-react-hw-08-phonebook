@@ -1,6 +1,11 @@
 import { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import { authOperations, authSelectors } from '../redux/Auth';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
 
 import Appbar from './AppBar/AppBar';
 import Wrapper from './Container/container';
@@ -21,21 +26,31 @@ const PhoneBookView = lazy(() =>
 );
 
 export default function App() {
+  const dispatch = useDispatch();
+  // const isFetchingCurrentUser = useSelector(authSelectors.getIsFetchingCurrent);
+
+  useEffect(() => {
+    dispatch(authOperations.fetchCurrentUser());
+  }, [dispatch]);
+
   return (
     <>
       <Wrapper>
         <Appbar />
         <Suspense fallback={<h1>LOADING...</h1>}>
           <Switch>
-            <Route path="/contacts" exact>
+            <PublicRoute path="/" exact>
+              <HomeView />
+            </PublicRoute>
+            <PrivateRoute path="/contacts" redirectTo="/login">
               <PhoneBookView />
-            </Route>
-            <Route path="/register" exact>
+            </PrivateRoute>
+            <PublicRoute exact path="/register" restricted>
               <RegisterView />
-            </Route>
-            <Route path="/login" exact>
+            </PublicRoute>
+            <PublicRoute exact path="/login" redirectTo="/contacts" restricted>
               <LoginView />
-            </Route>
+            </PublicRoute>
           </Switch>
         </Suspense>
       </Wrapper>

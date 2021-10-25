@@ -2,6 +2,7 @@ import { Button, Input, Form } from './ContactForm.styled';
 import { toast } from 'react-hot-toast';
 
 import {
+  addContact,
   useFetchContactsQuery,
   useCreateContactMutation,
 } from 'redux/contactSlice';
@@ -11,10 +12,10 @@ const handleSubmit = (e, data, createContact) => {
   const name = e.currentTarget.elements.name.value;
   const phone = e.currentTarget.elements.number.value;
 
-  if (data.find(contact => contact.name.toLowerCase() === name.toLowerCase())) {
-    toast.error(` ${name} is already in contacts.`);
-    return;
-  }
+  // if (data.find(contact => contact.name.toLowerCase() === name.toLowerCase())) {
+  //   toast.error(` ${name} is already in contacts.`);
+  //   return;
+  // }
 
   createContact({ name, phone });
   e.currentTarget.reset();

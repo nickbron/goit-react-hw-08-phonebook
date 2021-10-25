@@ -14,6 +14,7 @@ export default function ContactList() {
 
   const contacts = useSelector(state => state.contacts.filter);
   if (data) {
+    console.log('data');
     const normalizedFilter = contacts.toLowerCase();
     data1 = data.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter),
