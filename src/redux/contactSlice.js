@@ -1,26 +1,21 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-// const baseQuery = fetchBaseQuery({
-//   baseUrl: '/',
-//   prepareHeaders: (headers, { getState }) => {
-//     const token = getState().auth.token;
-//     console.log('tokennnn', token);
-//     if (token) {
-//       headers.set('authorization', `Bearer ${token}`);
-//     }
-
-//     return headers;
-//   },
-// });
 
 export const contactApi = createApi({
   reducerPath: 'contactApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://connections-api.herokuapp.com',
+
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.token;
+
+      if (token) {
+        headers.set('authorization', `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   tagTypes: ['contact'],
+
   endpoints: builder => ({
     fetchContacts: builder.query({
       query: () => '/contacts',

@@ -14,7 +14,6 @@ export default function ContactList() {
 
   const contacts = useSelector(state => state.contacts.filter);
   if (data) {
-    console.log('data');
     const normalizedFilter = contacts.toLowerCase();
     data1 = data.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter),
@@ -29,7 +28,8 @@ export default function ContactList() {
           {data1.map(contact => (
             <li key={contact.id}>
               <span>{contact.name}: </span>
-              <span>{contact.phone}</span>
+              <span>{contact.number}</span>
+
               <Button
                 onClick={() => deleteContact(contact.id)}
                 type="button"
