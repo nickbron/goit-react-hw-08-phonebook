@@ -19,15 +19,19 @@ const token = {
  * body: { name, email, password }
  * После успешной регистрации добавляем токен в HTTP-заголовок
  */
-const register = createAsyncThunk('auth/register', async credentials => {
-  try {
-    const { data } = await axios.post('/users/signup', credentials);
-    token.set(data.token);
-    return data;
-  } catch (error) {
-    // TODO: Добавить обработку ошибки error.message
-  }
-});
+const register = createAsyncThunk(
+  'auth/register',
+  async (credentials, rejectWithValue) => {
+    try {
+      const { data } = await axios.post('/users/signup', credentials);
+      token.set(data.token);
+      return data;
+    } catch (error) {
+      // TODO: Добавить обработку ошибки error.message
+      return rejectWithValue(error);
+    }
+  },
+);
 
 /*
  * POST @ /users/login

@@ -39,13 +39,18 @@ export default function App() {
         <Appbar />
         <Suspense fallback={<h1>LOADING...</h1>}>
           <Switch>
-            <PublicRoute path="/" exact>
+            {/* <PublicRoute path="/" exact>
               <HomeView />
-            </PublicRoute>
+            </PublicRoute> */}
             <PrivateRoute path="/contacts" redirectTo="/login">
               <PhoneBookView />
             </PrivateRoute>
-            <PublicRoute exact path="/register" restricted>
+            <PublicRoute
+              exact
+              path="/register"
+              redirectTo="/contacts"
+              restricted
+            >
               <RegisterView />
             </PublicRoute>
             <PublicRoute exact path="/login" redirectTo="/contacts" restricted>

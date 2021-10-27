@@ -28,13 +28,21 @@ export const store = configureStore({
     [contactApi.reducerPath]: contactApi.reducer,
   },
   devTools: process.env.NODE_ENV === 'development',
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
+  middleware: getDefaultMiddleware => [
+    ...getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
+      // ],
     }),
+    contactApi.middleware,
+  ],
 });
 
 export const persistor = persistStore(store);
 setupListeners(persistor.dispatch);
+
+// middleware: getDefaultMiddleware => [
+//   ...getDefaultMiddleware(),
+//   contactApi.middleware,
+// ],
