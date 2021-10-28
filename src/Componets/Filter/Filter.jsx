@@ -1,6 +1,6 @@
 import { Input } from '../ContactForm/ContactForm.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import actions from '../../redux/actions';
+import actions from '../../redux/contacts-actions';
 
 export default function Filter() {
   const filter = useSelector(state => state.contacts.filter);

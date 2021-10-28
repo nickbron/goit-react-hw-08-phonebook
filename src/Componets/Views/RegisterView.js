@@ -1,17 +1,11 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { authOperations } from '../../redux/Auth';
-
-const styles = {
-  form: {
-    width: 320,
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 15,
-  },
-};
+import { TextField, Button, Box } from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Email from '@mui/icons-material/Email';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
 
 export default function RegisterView() {
   const dispatch = useDispatch();
@@ -41,37 +35,74 @@ export default function RegisterView() {
   };
 
   return (
-    <div>
-      <h1>SIGN UP</h1>
+    <Box
+      sx={{
+        p: 3,
+        display: 'flex',
+        width: '350px',
+        justifyContent: 'center',
+      }}
+    >
+      <form onSubmit={handleSubmit} autoComplete="off">
+        <h2>Sign up </h2>
+        <TextField
+          size="small"
+          helperText="Please enter your name"
+          margin="dense"
+          label="Name"
+          //size="string"
+          type="text"
+          name="name"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            ),
+          }}
+          value={name}
+          onChange={handleChange}
+        />
+        <TextField
+          size="small"
+          helperText="Please enter your email"
+          margin="dense"
+          label="Email"
+          type="email"
+          name="email"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
+          }}
+          value={email}
+          onChange={handleChange}
+        />
+        <TextField
+          size="small"
+          helperText="Please enter your password"
+          margin="dense"
+          label="Password"
+          type="password"
+          name="password"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <VisibilityOff />
+              </InputAdornment>
+            ),
+          }}
+          value={password}
+          onChange={handleChange}
+          autoComplete="off"
+        />
 
-      <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
-        <label style={styles.label}>
-          Name
-          <input type="text" name="name" value={name} onChange={handleChange} />
-        </label>
-
-        <label style={styles.label}>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </label>
-
-        <label style={styles.label}>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </label>
-
-        <button type="submit">Create an account</button>
+        <Button variant="contained" type="submit">
+          Create an account
+        </Button>
       </form>
-    </div>
+    </Box>
   );
 }

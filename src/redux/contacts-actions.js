@@ -13,4 +13,5 @@ const removeItem = createAction('items/Remove');
 
 const filterItem = createAction('items/Filter');
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default { addItem, removeItem, filterItem };

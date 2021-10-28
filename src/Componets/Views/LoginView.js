@@ -1,17 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { authOperations } from '../../redux/Auth';
-
-const styles = {
-  form: {
-    width: 320,
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 15,
-  },
-};
+import { TextField, Button, Box } from '@mui/material';
+import Email from '@mui/icons-material/Email';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
 
 export default function LoginView() {
   const dispatch = useDispatch();
@@ -31,38 +24,63 @@ export default function LoginView() {
 
   const handleSubmit = e => {
     e.preventDefault();
+
     dispatch(authOperations.logIn({ email, password }));
     setEmail('');
     setPassword('');
   };
 
   return (
-    <div>
-      <h1>Sign in</h1>
+    <Box
+      sx={{
+        p: 3,
+        display: 'flex',
+        width: '350px',
+        justifyContent: 'center',
+      }}
+    >
+      <form onSubmit={handleSubmit} autoComplete="off">
+        <h2>Sign in</h2>
+        <TextField
+          size="small"
+          helperText="Please enter your email"
+          margin="dense"
+          label="Email"
+          type="email"
+          name="email"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Email />
+              </InputAdornment>
+            ),
+          }}
+          value={email}
+          onChange={handleChange}
+        />
 
-      <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
-        <label style={styles.label}>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-          />
-        </label>
-
-        <label style={styles.label}>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-          />
-        </label>
-
-        <button type="submit">Enter</button>
+        <TextField
+          size="small"
+          helperText="Please enter your password"
+          margin="dense"
+          label="Password"
+          type="password"
+          name="password"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <VisibilityOff />
+              </InputAdornment>
+            ),
+          }}
+          value={password}
+          onChange={handleChange}
+          autoComplete="off"
+        />
+        <Button variant="contained" type="submit">
+          Account login
+        </Button>
       </form>
-    </div>
+    </Box>
   );
 }

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
-import actions from './actions';
+import actions from './contacts-actions';
 
 const reducerItems = createReducer([], {
   [actions.addItem]: (state, { payload }) => [...state, payload],

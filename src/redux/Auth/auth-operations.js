@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+//import {fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
@@ -8,7 +8,6 @@ const token = {
   set(token) {
     axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   },
-
   unset() {
     axios.defaults.headers.common.Authorization = '';
   },
@@ -27,7 +26,6 @@ const register = createAsyncThunk(
       token.set(data.token);
       return data;
     } catch (error) {
-      // TODO: Добавить обработку ошибки error.message
       return rejectWithValue(error);
     }
   },
@@ -38,15 +36,19 @@ const register = createAsyncThunk(
  * body: { email, password }
  * После успешного логина добавляем токен в HTTP-заголовок
  */
-const logIn = createAsyncThunk('auth/login', async credentials => {
-  try {
-    const { data } = await axios.post('/users/login', credentials);
-    token.set(data.token);
-    return data;
-  } catch (error) {
-    // TODO: Добавить обработку ошибки error.message
-  }
-});
+const logIn = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post('/users/login', credentials);
+      token.set(data.token);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
 
 /*
  * POST @ /users/logout
@@ -58,7 +60,7 @@ const logOut = createAsyncThunk('auth/logout', async () => {
     await axios.post('/users/logout');
     token.unset();
   } catch (error) {
-    // TODO: Добавить обработку ошибки error.message
+    return error;
   }
 });
 /*
@@ -77,7 +79,6 @@ const fetchCurrentUser = createAsyncThunk(
     const persistedToken = state.auth.token;
 
     if (persistedToken === null) {
-      console.log('Токена нет, уходим из fetchCurrentUser');
       return thunkAPI.rejectWithValue();
     }
 
@@ -87,7 +88,7 @@ const fetchCurrentUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      // TODO: Добавить обработку ошибки error.message
+      return thunkAPI.rejectWithValue(error);
     }
   },
 );
